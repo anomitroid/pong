@@ -36,11 +36,11 @@ class GameController {
             this.handleInput(touch.clientY);
         }, { passive: false });
     }
-
+    
     handleInput(clientY) {
         const canvasRect = this.view.canvas.getBoundingClientRect();
         const y = clientY - canvasRect.top;
-        const scaledY = y / this.view.scale;
+        const scaledY = (y / this.view.canvas.height) * 600; // Map to original 600px height
         this.socket.emit('paddleMove', scaledY - 50); // 50 is half the paddle height
     }
 }
