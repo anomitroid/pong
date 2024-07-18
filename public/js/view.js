@@ -4,6 +4,8 @@ class GameView {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
         this.aspectRatio = 4 / 3; // Maintaining 800x600 aspect ratio
+        this.maxWidth = 800;
+        this.maxHeight = 600;
         this.resize();
         window.addEventListener('resize', () => this.resize());
     }
@@ -14,14 +16,19 @@ class GameView {
         const containerHeight = container.clientHeight;
         const containerRatio = containerWidth / containerHeight;
 
+        let newWidth, newHeight;
+
         if (containerRatio > this.aspectRatio) {
-            this.canvas.height = containerHeight;
-            this.canvas.width = containerHeight * this.aspectRatio;
+            newHeight = Math.min(containerHeight, this.maxHeight);
+            newWidth = newHeight * this.aspectRatio;
         } else {
-            this.canvas.width = containerWidth;
-            this.canvas.height = containerWidth / this.aspectRatio;
+            newWidth = Math.min(containerWidth, this.maxWidth);
+            newHeight = newWidth / this.aspectRatio;
         }
-        this.scale = this.canvas.width / 800; // 800 is the original game width
+
+        this.canvas.width = newWidth;
+        this.canvas.height = newHeight;
+        this.scale = newWidth / 800; // 800 is the original game width
     }
 
     render(gameState) {
